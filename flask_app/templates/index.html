@@ -37,193 +37,199 @@
 
     {% if plots %}
         <!-- Results Section -->
+
+
         <div class="mt-5">
             <h2>Simulation Results</h2>
             
-            <!-- Line Chart -->
-            <div style="position: relative; height: 400px; margin-bottom: 50px; width: 49%;">
-                <canvas id="sp500"></canvas>
-            </div>            
-            <script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    // Line Chart
-                    new Chart(
-                        document.getElementById('sp500').getContext('2d'), {
-                            type: 'line',
-                            data: {
-                                labels: {{ timeline | tojson }},
-                                datasets: [
-                                    {
-                                        label: 'S&P 500 Projection',
-                                        data: {{ sp500_prices | tojson }},
-                                        borderColor: 'rgba(75, 192, 192, 1)',
-                                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                                        tension: 0.4,
-                                        pointRadius: 0
-                                    },
-                                ]
-                            },
-                            options: {
-                                responsive: true,
-                                maintainAspectRatio: false,
-                                interaction: {
-                                    mode: 'index',
-                                    intersect: false
-                                },
-                                scales: {
-                                    y: {
-                                        beginAtZero: false
-                                    }
-                                }
-                            }
-                        }
-                    );
-                    
-                    // Add more chart initializations as needed
-                });
-            </script>
-
-            <div style="position: relative; height: 400px; margin-bottom: 50px; width: 50%;">
-                <canvas id="lineplot"></canvas>
-            </div>            
-            <script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    // Line Chart
-                    new Chart(
-                        document.getElementById('lineplot').getContext('2d'), {
-                            type: 'line',
-                            data: {
-                                labels: {{ timeline | tojson }},
-                                datasets: [
-                                    {
-                                        label: 'S&P 500 Projection',
-                                        data: {{ log_sp500 | tojson }},
-                                        borderColor: 'rgba(75, 192, 192, 1)',
-                                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                                        tension: 0.4,
-                                        pointRadius: 0
-                                    },
-                                    {% if av_log %}
-                                    {
-                                        label: 'Logarithmic Model',
-                                        data: {{ av_log | tojson }},
-                                        borderColor: 'rgba(192, 75, 192, 1)',
-                                        backgroundColor: 'rgba(192, 75, 192, 0.2)',
-                                        tension: 0.4,
-                                        pointRadius: 0
-                                    }
-                                    {% endif %}
-                                ]
-                            },
-                            options: {
-                                responsive: true,
-                                maintainAspectRatio: false,
-                                interaction: {
-                                    mode: 'index',
-                                    intersect: false
-                                },
-                                scales: {
-                                    y: {
-                                        beginAtZero: false
-                                    }
-                                }
-                            }
-                        }
-                    );
-                    
-                    // Add more chart initializations as needed
-                });
-            </script>
-
-            <div style="position: relative; height: 400px; margin-bottom: 50px; width: 50%;">
-                <canvas id="sp_vs_exp"></canvas>
-            </div>            
-            <script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    // Line Chart
-                    new Chart(
-                        document.getElementById('sp_vs_exp').getContext('2d'), {
-                            type: 'line',
-                            data: {
-                                labels: {{ timeline | tojson }},
-                                datasets: [
-                                    {
-                                        label: 'S&P 500 Projection',
-                                        data: {{ exp_sp | tojson }},
-                                        borderColor: 'rgba(75, 192, 192, 1)',
-                                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                                        tension: 0.4,
-                                        pointRadius: 0
-                                    },
-                                    {% if av_log %}
-                                    {
-                                        label: 'Logarithmic Model',
-                                        data: {{ av_exp | tojson }},
-                                        borderColor: 'rgba(192, 75, 192, 1)',
-                                        backgroundColor: 'rgba(192, 75, 192, 0.2)',
-                                        tension: 0.4,
-                                        pointRadius: 0
-                                    }
-                                    {% endif %}
-                                ]
-                            },
-                            options: {
-                                responsive: true,
-                                maintainAspectRatio: false,
-                                interaction: {
-                                    mode: 'index',
-                                    intersect: false
-                                },
-                                scales: {
-                                    y: {
-                                        beginAtZero: false
-                                    }
-                                }
-                            }
-                        }
-                    );
-                });
-            </script>
-
-            <div style="position: relative; height: 400px; margin-bottom: 50px; width: 50%;">
-                <canvas id="diference"></canvas>
-            </div>            
-            <script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    // Line Chart
-                    new Chart(
-                        document.getElementById('diference').getContext('2d'), {
-                            type: 'line',
-                            data: {
-                                labels: {{ timeline | tojson }},
-                                datasets: [
-                                    {
-                                        label: 'S&P 500 Projection',
-                                        data: {{ diference | tojson }},
-                                        borderColor: 'rgba(75, 192, 192, 1)',
-                                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                                        tension: 0.4,
-                                        pointRadius: 0
-                                    },
-                                ]
-                            },
-                            options: {
-                                responsive: true,
-                                maintainAspectRatio: false,
-                                interaction: {
-                                    mode: 'index',
-                                    intersect: false
-                                },
-                                scales: {
-                                    y: {
-                                        beginAtZero: false
-                                    }
-                                }
-                            }
-                        }
-                    );
-                });
-            </script>
+            <!-- Container principal com flexbox -->
+            <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: space-between;">
+                <!-- Primeira linha - 2 gráficos -->
+                <div style="flex: 1 1 48%; min-width: 300px; height: 400px;">
+                    <canvas id="sp500"></canvas>
+                </div>
+                
+                <div style="flex: 1 1 48%; min-width: 300px; height: 400px;">
+                    <canvas id="lineplot"></canvas>
+                </div>
+                
+                <!-- Segunda linha - 2 gráficos -->
+                <div style="flex: 1 1 48%; min-width: 300px; height: 400px;">
+                    <canvas id="sp_vs_exp"></canvas>
+                </div>
+                
+                <div style="flex: 1 1 48%; min-width: 300px; height: 400px;">
+                    <canvas id="diference"></canvas>
+                </div>
+            </div>
         </div>
+
+        
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                // Line Chart
+                new Chart(
+                    document.getElementById('sp500').getContext('2d'), {
+                        type: 'line',
+                        data: {
+                            labels: {{ timeline | tojson }},
+                            datasets: [
+                                {
+                                    label: 'S&P 500 Projection',
+                                    data: {{ sp500_prices | tojson }},
+                                    borderColor: 'rgba(75, 192, 192, 1)',
+                                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                    tension: 0.4,
+                                    pointRadius: 0
+                                },
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            interaction: {
+                                mode: 'index',
+                                intersect: false
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: false
+                                }
+                            }
+                        }
+                    }
+                );
+            });
+        </script>         
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                // Line Chart
+                new Chart(
+                    document.getElementById('lineplot').getContext('2d'), {
+                        type: 'line',
+                        data: {
+                            labels: {{ timeline | tojson }},
+                            datasets: [
+                                {
+                                    label: 'S&P 500 Projection',
+                                    data: {{ log_sp500 | tojson }},
+                                    borderColor: 'rgba(75, 192, 192, 1)',
+                                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                    tension: 0.4,
+                                    pointRadius: 0
+                                },
+                                {% if av_log %}
+                                {
+                                    label: 'Logarithmic Model',
+                                    data: {{ av_log | tojson }},
+                                    borderColor: 'rgba(192, 75, 192, 1)',
+                                    backgroundColor: 'rgba(192, 75, 192, 0.2)',
+                                    tension: 0.4,
+                                    pointRadius: 0
+                                }
+                                {% endif %}
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            interaction: {
+                                mode: 'index',
+                                intersect: false
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: false
+                                }
+                            }
+                        }
+                    }
+                );
+                
+                // Add more chart initializations as needed
+            });
+        </script>          
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                // Line Chart
+                new Chart(
+                    document.getElementById('sp_vs_exp').getContext('2d'), {
+                        type: 'line',
+                        data: {
+                            labels: {{ timeline | tojson }},
+                            datasets: [
+                                {
+                                    label: 'S&P 500 Projection',
+                                    data: {{ exp_sp | tojson }},
+                                    borderColor: 'rgba(75, 192, 192, 1)',
+                                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                    tension: 0.4,
+                                    pointRadius: 0
+                                },
+                                {% if av_log %}
+                                {
+                                    label: 'Logarithmic Model',
+                                    data: {{ av_exp | tojson }},
+                                    borderColor: 'rgba(192, 75, 192, 1)',
+                                    backgroundColor: 'rgba(192, 75, 192, 0.2)',
+                                    tension: 0.4,
+                                    pointRadius: 0
+                                }
+                                {% endif %}
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            interaction: {
+                                mode: 'index',
+                                intersect: false
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: false
+                                }
+                            }
+                        }
+                    }
+                );
+            });
+        </script>          
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                // Line Chart
+                new Chart(
+                    document.getElementById('diference').getContext('2d'), {
+                        type: 'line',
+                        data: {
+                            labels: {{ timeline | tojson }},
+                            datasets: [
+                                {
+                                    label: 'S&P 500 Projection',
+                                    data: {{ diference | tojson }},
+                                    borderColor: 'rgba(75, 192, 192, 1)',
+                                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                    tension: 0.4,
+                                    pointRadius: 0
+                                },
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            interaction: {
+                                mode: 'index',
+                                intersect: false
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: false
+                                }
+                            }
+                        }
+                    }
+                );
+            });
+        </script>
     {% endif %}
 {% endblock %}
