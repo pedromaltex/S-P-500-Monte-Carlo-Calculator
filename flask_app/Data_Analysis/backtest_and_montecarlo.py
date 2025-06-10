@@ -275,7 +275,7 @@ def monte_carlo(Monthly_investment, Year, simulacoes, Future_Years):
         roi_standart = 100*(final_values1 - total_invest[-1])/total_invest[-1]
 
         # Define a largura dos bins
-        bin_width = roi_maltez.max()/50
+        bin_width = roi_maltez.max() / 50
 
         # Define os limites globais
         min_val = min(roi_standart.min(), roi_maltez.min())
@@ -285,7 +285,7 @@ def monte_carlo(Monthly_investment, Year, simulacoes, Future_Years):
         bins = np.arange(np.floor(min_val), np.ceil(max_val) + bin_width, bin_width)
 
         #plot10(roi_standart, roi_maltez, bins)
-
+    diference = 100 * (y - y_pred)/y_pred
     return [sp500_data['Date'], sp500_data['Close'], name, y_pred_log, \
         log_sp500, coef_log[1], coef_log[0], y_pred, y, diference, \
         porfolio, porfolio2, total_invest, total_allocation, final_values1, \

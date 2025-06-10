@@ -64,20 +64,32 @@ def index():
 
         # Run Monte Carlo simulation
         variables = monte_carlo(monthly, year, n_simulations, future_years)
+        timeline = [dt.strftime('%Y-%m-%d') for dt in variables[0]]
+
+        sp500_prices = variables[1]['^GSPC'].tolist()
+        av_log = variables[3].tolist()
+        log_sp500 = variables[4]['^GSPC'].tolist()
+        av_exp = variables[7].tolist()
+        exp_sp = variables[8].tolist()
+        diference = variables[9].tolist()
+
+        print(diference)
+
+
 
         # Render the SAME template with results
         return render_template("index.html", 
             plots=True,  # Flag to show plots section
-            timeline=variables[0], \
-            sp500_prices=variables[1], \
+            timeline=timeline, \
+            sp500_prices=sp500_prices, \
             name=variables[2], \
-            av_log=variables[3], \
-            log_sp500=variables[4], \
+            av_log=av_log, \
+            log_sp500=log_sp500, \
             coef1=variables[5], \
             coef2=variables[6], \
-            av_exp=variables[7], \
-            exp_sp=variables[8], \
-            diference=variables[9], \
+            av_exp=av_exp, \
+            exp_sp=exp_sp, \
+            diference=diference, \
             portfolio=variables[10], \
             porfolio2=variables[11], \
             total_invest=variables[12], \
