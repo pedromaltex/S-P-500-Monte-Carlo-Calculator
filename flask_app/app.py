@@ -52,8 +52,47 @@ def after_request(response):
 
 @app.route("/", methods=["GET", "POST"])
 def index():
-    variables = monte_carlo(900, 2025, 10000, 10)
-    return render_template("index.html", variables=variables)
+    if request.method == "POST":
+        # Extract form inputs (with error handling)
+        try:
+            monthly = float(request.form.get("Monthly", 900))
+            year = int(request.form.get("Year", 2025))
+            n_simulations = int(request.form.get("NSimulations", 10000))
+            future_years = int(request.form.get("future", 10))
+        except (ValueError, TypeError):
+            return "Invalid input values", 400
+
+        # Run Monte Carlo simulation
+        variables = monte_carlo(monthly, year, n_simulations, future_years)
+
+        # Render the SAME template with results
+        return render_template("index.html", 
+            plots=True,  # Flag to show plots section
+            timeline=variables[0], \
+            sp500_prices=variables[1], \
+            name=variables[2], \
+            av_log=variables[3], \
+            log_sp500=variables[4], \
+            coef1=variables[5], \
+            coef2=variables[6], \
+            av_exp=variables[7], \
+            exp_sp=variables[8], \
+            diference=variables[9], \
+            portfolio=variables[10], \
+            porfolio2=variables[11], \
+            total_invest=variables[12], \
+            total_allocation=variables[13], \
+            final_values1=variables[14], \
+            final_values2=variables[15], \
+            total_allocation2=variables[16], \
+            final_allocation=variables[17], \
+            roi_standart=variables[18], \
+            roi_maltez=variables[19], \
+            bins=variables[20]                        
+        )
+
+    # GET request: Show empty form
+    return render_template("index.html", plots=False)
 
 
 @app.route("/predict", methods=["GET", "POST"])

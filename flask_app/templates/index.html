@@ -1,74 +1,100 @@
 {% extends "layout.html" %}
-<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-
-{% block title %}
-Portfolio
-{% endblock %}
+{% block title %}Portfolio Simulation{% endblock %}
 
 {% block main %}
-<h1>{{variables[2]}}</h1>
+    <h1>Portfolio Monte Carlo Simulation</h1>
 
-    <div style="display: flex; ">
+    <!-- Form with preserved inputs -->
+    <div style="display: flex; flex-direction: column;">
         <form id="compare" method="POST" style="width: 100%; text-align: left;">
-            <div class="mb-3" style="width: 100%; flex: auto;">
-                <input autocomplete="off" autofocus="" class="form-control w-auto" name="Monthly" placeholder="Monthly Investments" type="number">
-                <input autocomplete="off" autofocus="" class="form-control w-auto" name="Year" placeholder="Year" type="number">
-                <input autocomplete="off" autofocus="" class="form-control w-auto" name="NSimulations" placeholder="Number of Simulations" type="number">
-                <input autocomplete="off" autofocus="" class="form-control w-auto" name="future" placeholder="How Many Future Years" type="number">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 1rem;">
+                {% for field in ['Monthly', 'Year', 'NSimulations', 'future'] %}
+                <div style="flex: 1;">
+                    <input autocomplete="off" class="form-control" 
+                           name="{{ field }}" 
+                           placeholder="{{ {
+                               'Monthly': 'Monthly Investments ($)',
+                               'Year': 'Starting Year',
+                               'NSimulations': 'Simulation Count',
+                               'future': 'Years to Project'
+                           }[field] }}"
+                           type="number"
+                           value="{{ form_data[field] if form_data else '' }}">
+                </div>
+                {% endfor %}
             </div>
-            <button class="btn btn-primary" type="submit">Calculate</button>
+            <div style="display: flex; justify-content: center;">
+                <button class="btn btn-primary" type="submit">Calculate</button>
+            </div>
         </form>
     </div>
 
-    <div class="graph_line">
+    {% if error %}
+        <div class="alert alert-danger">{{ error }}</div>
+    {% endif %}
 
-        <div class="chart-container" style="position: relative; height:40vh; width: 50%; padding-right: 50px;">
-            <canvas id= "lineChart" width="700" height="400" style="display: block; margin-left: auto;"></canvas>
-                <script>
-                    document.addEventListener("DOMContentLoaded", function () {
-
-                        var ctx = document.getElementById("lineChart").getContext("2d");
-                        var lineChart = new Chart(ctx, {
-                            type: "line",
-
+    {% if plots %}
+        <!-- Results Section -->
+        <div class="mt-5">
+            <h2>Simulation Results</h2>
+            
+            <!-- Line Chart -->
+            <div style="position: relative; height: 400px; margin-bottom: 50px;">
+                <canvas id="lineChart"></canvas>
+            </div>
+            
+            <!-- Additional charts can be added here -->
+            
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    // Line Chart
+                    new Chart(
+                        document.getElementById('lineChart').getContext('2d'), {
+                            type: 'line',
                             data: {
-                                labels: {{ variables[2] | safe }},
-                                datasets: [{
-                                    label: {{ variables[2] | tojson}},
-                                    data: {{ variables[1] | safe }},
-                                    fill: false,
-                                    borderColor: "rgb(75, 192, 192)",
-                                    backgroundColor: "#353535",
-                                    pointRadius: 0, // Aumenta os pontos para melhor visualização da tooltip
-                                    lineTension: 0.4,
-                                }
-                                {% if variables[3] is not none %},
-                                {
-                                    label: {{ variables[2] | tojson}},
-                                    data: {{ variables[3] | safe }},
-                                    fill: false,
-                                    borderColor: "rgb(192, 75, 192)",
-                                    backgroundColor: "#353535",
-                                    pointRadius: 0, // Aumenta os pontos para melhor visualização da tooltip
-                                    lineTension: 0.4,
-                                }
-                                {% endif %}
+                                labels: {{ timeline | tojson }},
+                                datasets: [
+                                    {
+                                        label: 'S&P 500 Projection',
+                                        data: {{ sp500_prices | tojson }},
+                                        borderColor: 'rgba(75, 192, 192, 1)',
+                                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                        tension: 0.4,
+                                        pointRadius: 0
+                                    },
+                                    {% if av_log %}
+                                    {
+                                        label: 'Logarithmic Model',
+                                        data: {{ av_log | tojson }},
+                                        borderColor: 'rgba(192, 75, 192, 1)',
+                                        backgroundColor: 'rgba(192, 75, 192, 0.2)',
+                                        tension: 0.4,
+                                        pointRadius: 0
+                                    }
+                                    {% endif %}
                                 ]
                             },
-
                             options: {
                                 responsive: true,
                                 maintainAspectRatio: false,
-                                spanGaps: true,
-                                hover: {
+                                interaction: {
                                     mode: 'index',
-                                    intersect: false, // Permite hover ao longo do eixo X
+                                    intersect: false
                                 },
+                                scales: {
+                                    y: {
+                                        beginAtZero: false
+                                    }
+                                }
                             }
-                        });
-                    });
-                </script>
+                        }
+                    );
+                    
+                    // Add more chart initializations as needed
+                });
+            </script>
         </div>
-    </div>
+    {% endif %}
 {% endblock %}
