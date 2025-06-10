@@ -52,56 +52,62 @@ def after_request(response):
 
 @app.route("/", methods=["GET", "POST"])
 def index():
-    if request.method == "POST":
-        # Extract form inputs (with error handling)
-        try:
-            monthly = float(request.form.get("Monthly", 900))
-            year = int(request.form.get("Year", 2025))
-            n_simulations = int(request.form.get("NSimulations", 10000))
-            future_years = int(request.form.get("future", 10))
-        except (ValueError, TypeError):
-            return "Invalid input values", 400
+    #if request.method == "POST":
+    # Extract form inputs (with error handling)
+    try:
+        monthly = float(request.form.get("Monthly", 900))
+        year = int(request.form.get("Year", 2025))
+        n_simulations = int(request.form.get("NSimulations", 10000))
+        future_years = int(request.form.get("future", 10))
+    except (ValueError, TypeError):
+        return "Invalid input values", 400
 
-        # Run Monte Carlo simulation
-        variables = monte_carlo(monthly, year, n_simulations, future_years)
-        timeline = [dt.strftime('%Y-%m-%d') for dt in variables[0]]
+    # Run Monte Carlo simulation
+    variables = monte_carlo(monthly, year, n_simulations, future_years)
+    timeline = [dt.strftime('%Y-%m-%d') for dt in variables[0]]
 
-        sp500_prices = variables[1]['^GSPC'].tolist()
-        av_log = variables[3].tolist()
-        log_sp500 = variables[4]['^GSPC'].tolist()
-        av_exp = variables[7].tolist()
-        exp_sp = variables[8].tolist()
-        diference = variables[9].tolist()
+    sp500_prices = variables[1]['^GSPC'].tolist()
+    av_log = variables[3].tolist()
+    log_sp500 = variables[4]['^GSPC'].tolist()
+    av_exp = variables[7].tolist()
+    exp_sp = variables[8].tolist()
+    diference = variables[9].tolist()
+    s_portfolio = variables[10].tolist()
+    s_portfolio2 = variables[11].tolist()
 
-        print(diference)
+
+
+    print(diference)
 
 
 
-        # Render the SAME template with results
-        return render_template("index.html", 
-            plots=True,  # Flag to show plots section
-            timeline=timeline, \
-            sp500_prices=sp500_prices, \
-            name=variables[2], \
-            av_log=av_log, \
-            log_sp500=log_sp500, \
-            coef1=variables[5], \
-            coef2=variables[6], \
-            av_exp=av_exp, \
-            exp_sp=exp_sp, \
-            diference=diference, \
-            portfolio=variables[10], \
-            porfolio2=variables[11], \
-            total_invest=variables[12], \
-            total_allocation=variables[13], \
-            final_values1=variables[14], \
-            final_values2=variables[15], \
-            total_allocation2=variables[16], \
-            final_allocation=variables[17], \
-            roi_standart=variables[18], \
-            roi_maltez=variables[19], \
-            bins=variables[20]                        
-        )
+    # Render the SAME template with results
+    return render_template("index.html", 
+        plots=True,  # Flag to show plots section
+        timeline=timeline, \
+        sp500_prices=sp500_prices, \
+        name=variables[2], \
+        av_log=av_log, \
+        log_sp500=log_sp500, \
+        coef1=variables[5], \
+        coef2=variables[6], \
+        av_exp=av_exp, \
+        exp_sp=exp_sp, \
+        diference=diference, \
+        s_portfolio=s_portfolio, \
+        s_portfolio2=s_portfolio2, \
+        portfolio=variables[12], \
+        porfolio2=variables[13], \
+        total_invest=variables[12], \
+        total_allocation=variables[13], \
+        final_values1=variables[14], \
+        final_values2=variables[15], \
+        total_allocation2=variables[16], \
+        final_allocation=variables[17], \
+        roi_standart=variables[18], \
+        roi_maltez=variables[19], \
+        bins=variables[20]                        
+    )
 
     # GET request: Show empty form
     return render_template("index.html", plots=False)

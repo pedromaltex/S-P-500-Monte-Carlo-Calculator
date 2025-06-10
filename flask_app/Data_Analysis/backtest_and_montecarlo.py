@@ -101,34 +101,34 @@ def monte_carlo(Monthly_investment, Year, simulacoes, Future_Years):
     print(f"Crescimento médio anual (CAGR): {cagr * 100:.2f}%")
     # %%
     # MÉTODO TESTE
-    total_invest = Monthly_investment * (np.arange(len(y)) + 1)
+    s_total_invest = Monthly_investment * (np.arange(len(y)) + 1)
 
     sp500_price = y / 10
 
     stocks_owned = np.cumsum(Monthly_investment / sp500_price)
 
-    porfolio = stocks_owned * sp500_price # Calcular evolução portfolio
+    s_porfolio = stocks_owned * sp500_price # Calcular evolução portfolio
 
     # %%
     # Método de weighted buy
     allocation = (Monthly_investment * (1 - 2.5 * diference/100)) # dinheiro investido mês a mês
-    total_allocation = np.zeros(len(allocation))
+    s_total_allocation = np.zeros(len(allocation))
     allocation = np.clip(allocation, Monthly_investment * 0.5, Monthly_investment * 1.5)
-    total_allocation = np.cumsum(allocation)
+    s_total_allocation = np.cumsum(allocation)
 
 
     stocks_owned2 = allocation / sp500_price
 
     stocks_owned2 = np.cumsum(allocation / sp500_price)
 
-    porfolio2 = stocks_owned2 * sp500_price
+    s_porfolio2 = stocks_owned2 * sp500_price
     # %%
-    print(f"Totalidade de dinheiro alocado em Standart Investment: {total_invest[-1]}.")
-    print(f"Totalidade de carteira de investimento em Standart Investment: {porfolio[-1]}.")
-    print(f"Totalidade de dinheiro alocado: {total_allocation[-1]}.")
-    print(f"Totalidade de carteira de investimento: {porfolio2[-1]}.")
+    print(f"Totalidade de dinheiro alocado em Standart Investment: {s_total_invest[-1]}.")
+    print(f"Totalidade de carteira de investimento em Standart Investment: {s_porfolio[-1]}.")
+    print(f"Totalidade de dinheiro alocado: {s_total_allocation[-1]}.")
+    print(f"Totalidade de carteira de investimento: {s_porfolio2[-1]}.")
     # %%
-    #plot5(sp500_data['Date'], porfolio, porfolio2)
+    #plot5(sp500_data['Date'], s_porfolio, s_porfolio2)
     #plot6(sp500_data['Date'], total_invest, total_allocation)
 
     # %%
@@ -288,7 +288,7 @@ def monte_carlo(Monthly_investment, Year, simulacoes, Future_Years):
     diference = 100 * (y - y_pred)/y_pred
     return [sp500_data['Date'], sp500_data['Close'], name, y_pred_log, \
         log_sp500, coef_log[1], coef_log[0], y_pred, y, diference, \
-        porfolio, porfolio2, total_invest, total_allocation, final_values1, \
+        s_porfolio, s_porfolio2, porfolio, porfolio2, s_total_invest, s_total_allocation, final_values1, \
         final_values2, total_allocation, final_allocation, roi_standart, \
         roi_maltez, bins]
 

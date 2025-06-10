@@ -45,21 +45,27 @@
             <!-- Container principal com flexbox -->
             <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: space-between;">
                 <!-- Primeira linha - 2 gráficos -->
-                <div style="flex: 1 1 48%; min-width: 300px; height: 400px;">
+                <div style="flex: 1 1 24%; min-width: 300px; height: 400px;">
                     <canvas id="sp500"></canvas>
                 </div>
                 
-                <div style="flex: 1 1 48%; min-width: 300px; height: 400px;">
+                <div style="flex: 1 1 24%; min-width: 300px; height: 400px;">
                     <canvas id="lineplot"></canvas>
                 </div>
                 
                 <!-- Segunda linha - 2 gráficos -->
-                <div style="flex: 1 1 48%; min-width: 300px; height: 400px;">
+                <div style="flex: 1 1 24%; min-width: 300px; height: 400px;">
                     <canvas id="sp_vs_exp"></canvas>
                 </div>
                 
-                <div style="flex: 1 1 48%; min-width: 300px; height: 400px;">
+                <div style="flex: 1 1 24%; min-width: 300px; height: 400px;">
                     <canvas id="diference"></canvas>
+                </div>
+                <div style="flex: 1 1 24%; min-width: 300px; height: 400px;">
+                    <canvas id="standart_vs_weigted"></canvas>
+                </div>
+                <div style="flex: 1 1 24%; min-width: 300px; height: 400px;">
+                    <canvas id="standart_vs_weigted_alloc"></canvas>
                 </div>
             </div>
         </div>
@@ -212,6 +218,52 @@
                                     tension: 0.4,
                                     pointRadius: 0
                                 },
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            interaction: {
+                                mode: 'index',
+                                intersect: false
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: false
+                                }
+                            }
+                        }
+                    }
+                );
+            });
+        </script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                // Line Chart
+                new Chart(
+                    document.getElementById('standart_vs_weigted').getContext('2d'), {
+                        type: 'line',
+                        data: {
+                            labels: {{ timeline | tojson }},
+                            datasets: [
+                                {
+                                    label: 'S&P 500 Projection',
+                                    data: {{ s_portfolio | tojson }},
+                                    borderColor: 'rgba(75, 192, 192, 1)',
+                                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                    tension: 0.4,
+                                    pointRadius: 0
+                                },
+                                {% if s_portfolio2 %}
+                                {
+                                    label: 'Logarithmic Model',
+                                    data: {{ s_portfolio2 | tojson }},
+                                    borderColor: 'rgba(192, 75, 192, 1)',
+                                    backgroundColor: 'rgba(192, 75, 192, 0.2)',
+                                    tension: 0.4,
+                                    pointRadius: 0
+                                }
+                                {% endif %}
                             ]
                         },
                         options: {
