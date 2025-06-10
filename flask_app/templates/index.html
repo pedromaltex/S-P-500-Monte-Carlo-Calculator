@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@2.1.0"></script>
 
 {% block title %}Portfolio Simulation{% endblock %}
 
@@ -69,10 +70,13 @@
                     <canvas id="standart_vs_weigted_diff"></canvas>
                 </div>
                 <div style="flex: 1 1 24%; min-width: 300px; height: 400px;">
-                    <canvas id="montecarlo"></canvas>
+                    <canvas style="height: 100%; width: 100%;" id="montecarlo"></canvas>
                 </div>
-                <div style="flex: 1 1 48%; min-width: 300px; height: 400px;">
-                    <canvas id="histogram"></canvas>
+                <div style="flex: 1 1 24%; min-width: 300px; height: 400px;">
+                    <canvas style="height: 100%; width: 100%;" id="histogram_roi"></canvas>
+                </div>
+                <div style="flex: 1 1 24%; min-width: 300px; height: 400px;">
+                    <canvas style="height: 100%; width: 100%;" id="histogram_final_values"></canvas>
                 </div>
             </div>
         </div>
@@ -378,7 +382,7 @@
                 );
             });
         </script>
-        
+
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 // Line Chart
@@ -438,6 +442,118 @@
                     }
                 );
             });
+        </script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+            // Dados passados do Flask (substitua pelos seus dados reais)
+            const f1 = {{ final_values1 | tojson }};  // Array de valores do Buy and Hold
+            const f2 = {{ final_values2 | tojson }};  // Array de valores do Weighted Investment
+
+            // Configuração dos bins (igual ao Python)
+            const binWidth = {{ bin_width2 | tojson }};
+            const minVal = {{ bin_min_value | tojson }};
+            const maxVal = {{ bin_max_value | tojson }};
+            const bins = {{ bins2 | tojson }};
+
+            // Calcula as frequências para cada dataset
+            const countInBin = (data, bins) => {
+                const counts = new Array(bins.length - 1).fill(0);
+                data.forEach(value => {
+                    const index = bins.findIndex(bin => value <= bin) - 1;
+                    if (index >= 0 && index < counts.length) counts[index]++;
+                });
+                return counts;
+            };
+
+            const f1Counts = countInBin(f1, bins);
+            const f2Counts = countInBin(f2, bins);
+
+            // Médias
+            const f1Mean = f1.reduce((a, b) => a + b, 0) / f1.length;
+            const f2Mean = f2.reduce((a, b) => a + b, 0) / f2.length;
+
+            // Criação do gráfico
+            const ctx = document.getElementById('histogram_final_values').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: bins.slice(0, -1).map((bin, i) => `${bin.toFixed(0)}-${bins[i+1].toFixed(0)}`),
+                    datasets: [
+                        {
+                            label: 'Buy and Hold',
+                            data: f1Counts,
+                            backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                            borderColor: 'rgba(75, 192, 192, 0.6)',          
+                            borderWidth: 1,
+                        },
+                        {
+                            label: 'not roi Weighted Investment',
+                            data: f2Counts,
+                            backgroundColor: 'rgba(192, 75, 192, 0.7)',    // vermelho com transparência
+                            borderColor: 'rgba(192, 75, 192, 0.7)',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+            });
+        });
+        </script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+            // Dados passados do Flask (substitua pelos seus dados reais)
+            const f1 = {{ roi_standart | tojson }};  // Array de valores do Buy and Hold
+            const f2 = {{ roi_maltez | tojson }};  // Array de valores do Weighted Investment
+
+            // Configuração dos bins (igual ao Python)
+            const binWidth = {{ bin_width | tojson }};
+            const minVal = {{ bin_min_value | tojson }};
+            const maxVal = {{ bin_max_value | tojson }};
+            const bins = {{ bins | tojson }};
+
+            // Calcula as frequências para cada dataset
+            const countInBin = (data, bins) => {
+                const counts = new Array(bins.length - 1).fill(0);
+                data.forEach(value => {
+                    const index = bins.findIndex(bin => value <= bin) - 1;
+                    if (index >= 0 && index < counts.length) counts[index]++;
+                });
+                return counts;
+            };
+
+            const f1Counts = countInBin(f1, bins);
+            const f2Counts = countInBin(f2, bins);
+
+            // Médias
+            const f1Mean = f1.reduce((a, b) => a + b, 0) / f1.length;
+            const f2Mean = f2.reduce((a, b) => a + b, 0) / f2.length;
+
+            // Criação do gráfico
+            const ctx = document.getElementById('histogram_roi').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: bins.slice(0, -1).map((bin, i) => `${bin.toFixed(0)}-${bins[i+1].toFixed(0)}`),
+                    datasets: [
+                        {
+                            label: 'Buy and Hold',
+                            data: f1Counts,
+                            backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                            borderColor: 'rgba(75, 192, 192, 0.6)',          
+                            borderWidth: 1,
+                        },
+                        {
+                            label: 'Weighted Investment',
+                            data: f2Counts,
+                            backgroundColor: 'rgba(192, 75, 192, 0.7)',    // vermelho com transparência
+                            borderColor: 'rgba(192, 75, 192, 0.7)',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+            });
+        });
         </script>
     {% endif %}
 {% endblock %}

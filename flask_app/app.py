@@ -87,6 +87,27 @@ def index():
     future_dates = montecarlo.index.strftime('%Y-%m-%d').tolist()
     y_pred_future = variables[-2].tolist()
 
+    roi_standart = variables[20].tolist()
+    roi_maltez = variables[21].tolist()
+    bins = variables[22].tolist()
+    bin_min_value = variables[23]
+    bin_max_value = variables[24]
+    bin_width = variables[25]
+
+    final_values1=variables[16]
+    final_values2=variables[17]
+
+    # Define os limites globais
+    min_val2 = min(final_values1.min(), final_values2.min())
+    max_val2 = max(final_values1.max(), final_values2.max())
+    bin_width2 = final_values2.max()/100
+
+    # Gera os bins com mesma largura
+    bins2 = np.arange(np.floor(min_val2), np.ceil(max_val2) + bin_width2, bin_width2)
+    bins2=bins2.tolist()
+    final_values1=final_values1.tolist()
+    final_values2=final_values2.tolist()
+
     # Render the SAME template with results
     return render_template("index.html", 
         plots=True,  # Flag to show plots section
@@ -108,17 +129,20 @@ def index():
         porfolio2=variables[13], \
         total_invest=variables[12], \
         total_allocation=variables[13], \
-        final_values1=variables[14], \
-        final_values2=variables[15], \
+        final_values1=final_values1, \
+        final_values2=final_values2, \
         total_allocation2=variables[16], \
         final_allocation=variables[17], \
-        roi_standart=variables[18], \
-        roi_maltez=variables[19], \
-        bins=variables[20],  \
+        roi_standart=roi_standart, \
+        roi_maltez=roi_maltez, \
+        bins=bins,  \
         min_values=min_values, \
         max_values=max_values , future_dates=future_dates, \
-        mean_values=mean_values, \
-        y_pred_future=y_pred_future, dif=dif, \
+        mean_values=mean_values, y_pred_future=y_pred_future, \
+        dif=dif, bin_min_value=bin_min_value, \
+        bin_max_value=bin_max_value, bin_width=bin_width, \
+        bin_min_value2=min_val2, bin_max_value2=max_val2, bins2=bins2, \
+        bin_width2=bin_width2
     )
 
     # GET request: Show empty form

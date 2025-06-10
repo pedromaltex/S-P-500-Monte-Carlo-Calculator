@@ -290,7 +290,7 @@ def monte_carlo(Monthly_investment, Year, simulacoes, Future_Years):
         log_sp500, coef_log[1], coef_log[0], y_pred, y, diference, \
         s_porfolio, s_porfolio2, porfolio, porfolio2, s_total_invest, s_total_allocation, final_values1, \
         final_values2, total_allocation, final_allocation, roi_standart, \
-        roi_maltez, bins, y_pred_future, sp500_price_monte]
+        roi_maltez, bins, np.floor(min_val), np.ceil(max_val), bin_width, y_pred_future, sp500_price_monte]
 
 
 
