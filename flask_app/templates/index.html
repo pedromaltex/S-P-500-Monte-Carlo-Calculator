@@ -4,7 +4,7 @@
 {% block title %}Portfolio Simulation{% endblock %}
 
 {% block main %}
-    <h1>Portfolio Monte Carlo Simulation</h1>
+    <!--<h1>Portfolio Monte Carlo Simulation</h1>-->
 
     <!-- Form with preserved inputs -->
     <div style="display: flex; flex-direction: column;">
@@ -39,9 +39,7 @@
         <!-- Results Section -->
 
 
-        <div class="mt-5">
-            <h2>Simulation Results</h2>
-            
+        <div class="mt-5">            
             <!-- Container principal com flexbox -->
             <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: space-between;">
                 <!-- Primeira linha - 2 gráficos -->
@@ -66,6 +64,15 @@
                 </div>
                 <div style="flex: 1 1 24%; min-width: 300px; height: 400px;">
                     <canvas id="standart_vs_weigted_alloc"></canvas>
+                </div>
+                <div style="flex: 1 1 24%; min-width: 300px; height: 400px;">
+                    <canvas id="standart_vs_weigted_diff"></canvas>
+                </div>
+                <div style="flex: 1 1 24%; min-width: 300px; height: 400px;">
+                    <canvas id="montecarlo"></canvas>
+                </div>
+                <div style="flex: 1 1 48%; min-width: 300px; height: 400px;">
+                    <canvas id="histogram"></canvas>
                 </div>
             </div>
         </div>
@@ -106,7 +113,8 @@
                     }
                 );
             });
-        </script>         
+        </script>
+
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 // Line Chart
@@ -154,7 +162,8 @@
                 
                 // Add more chart initializations as needed
             });
-        </script>          
+        </script>
+
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 // Line Chart
@@ -200,7 +209,8 @@
                     }
                 );
             });
-        </script>          
+        </script>
+
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 // Line Chart
@@ -237,6 +247,7 @@
                 );
             });
         </script>
+
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 // Line Chart
@@ -277,6 +288,151 @@
                                 y: {
                                     beginAtZero: false
                                 }
+                            }
+                        }
+                    }
+                );
+            });
+        </script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                // Line Chart
+                new Chart(
+                    document.getElementById('standart_vs_weigted_alloc').getContext('2d'), {
+                        type: 'line',
+                        data: {
+                            labels: {{ timeline | tojson }},
+                            datasets: [
+                                {
+                                    label: 'S&P 500 Projection',
+                                    data: {{ s_total_allocation | tojson }},
+                                    borderColor: 'rgba(75, 192, 192, 1)',
+                                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                    tension: 0.4,
+                                    pointRadius: 0
+                                },
+                                {% if s_total_invest %}
+                                {
+                                    label: 'Logarithmic Model',
+                                    data: {{ s_total_invest | tojson }},
+                                    borderColor: 'rgba(192, 75, 192, 1)',
+                                    backgroundColor: 'rgba(192, 75, 192, 0.2)',
+                                    tension: 0.4,
+                                    pointRadius: 0
+                                }
+                                {% endif %}
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            interaction: {
+                                mode: 'index',
+                                intersect: false
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: false
+                                }
+                            }
+                        }
+                    }
+                );
+            });
+        </script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                // Line Chart
+                new Chart(
+                    document.getElementById('standart_vs_weigted_diff').getContext('2d'), {
+                        type: 'line',
+                        data: {
+                            labels: {{ timeline | tojson }},
+                            datasets: [
+                                {
+                                    label: 'S&P 500 Projection',
+                                    data: {{ dif | tojson }},
+                                    borderColor: 'rgba(75, 192, 192, 1)',
+                                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                    tension: 0.4,
+                                    pointRadius: 0
+                                },
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            interaction: {
+                                mode: 'index',
+                                intersect: false
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: false
+                                }
+                            }
+                        }
+                    }
+                );
+            });
+        </script>
+        
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                // Line Chart
+                new Chart(
+                    document.getElementById('montecarlo').getContext('2d'), {
+                        type: 'line',
+                        data: {
+                            labels: {{ future_dates | tojson }},  // Datas no eixo X
+                            datasets: [
+                                {
+                                    label: 'S&P 500 Projection',
+                                    data: {{ y_pred_future | tojson }},
+                                    borderColor: 'rgba(75, 192, 192, 1)',
+                                    tension: 0.4,
+                                    pointRadius: 0
+                                },
+                                //{
+                                //   label: 'Media',
+                                //    data: {{ mean_values | tojson }},
+                                //    borderColor: 'rgba(75, 192, 192, 1)',  // Verde
+                                //    borderWidth: 2,
+                                //    pointRadius: 0
+                                //},
+                                {
+                                    label: 'Máximo (Cenário Otimista)',
+                                    data: {{ max_values | tojson }},
+                                    borderColor: 'rgba(255, 99, 132, 0.8)',  // Vermelho
+                                    borderWidth: 1,
+                                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                    pointRadius: 0,  // Sem pontos para melhor performance
+                                    fill: false
+                                },
+                                {
+                                    label: 'Mínimo (Cenário Pessimista)',
+                                    data: {{ min_values | tojson }},
+                                    borderColor: 'rgba(54, 162, 235, 0.8)',  // Azul
+                                    borderWidth: 1,
+                                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                    pointRadius: 0,
+                                    fill: '-1'  // Preenche a área entre este e o dataset anterior
+                                },
+                                
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                title: {
+                                    display: true,
+                                    text: 'Faixa de Resultados (Monte Carlo)'
+                                }
+                            },
+                            scales: {
+                                y: { beginAtZero: false }
                             }
                         }
                     }

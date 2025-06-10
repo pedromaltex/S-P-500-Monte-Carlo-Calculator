@@ -201,7 +201,7 @@ def monte_carlo(Monthly_investment, Year, simulacoes, Future_Years):
     final_prices = precos_df.iloc[-1, :]
 
     # Calcular os percentis 25 e 75 dos preços finais
-    perc = 25
+    perc = 10
     percentil_25 = np.percentile(final_prices, perc)
     percentil_75 = np.percentile(final_prices, 100 - perc)
 
@@ -223,7 +223,7 @@ def monte_carlo(Monthly_investment, Year, simulacoes, Future_Years):
         for i in range(1, len(total_invest)):
             total_invest[i] = total_invest[i-1] + Monthly_investment
 
-        sp500_price_monte = dt / 10
+        sp500_price_monte = dt
 
         ######################## Chat GPT
         # Inicializar o array para guardar a evolução de ações compradas por simulação
@@ -290,7 +290,7 @@ def monte_carlo(Monthly_investment, Year, simulacoes, Future_Years):
         log_sp500, coef_log[1], coef_log[0], y_pred, y, diference, \
         s_porfolio, s_porfolio2, porfolio, porfolio2, s_total_invest, s_total_allocation, final_values1, \
         final_values2, total_allocation, final_allocation, roi_standart, \
-        roi_maltez, bins]
+        roi_maltez, bins, y_pred_future, sp500_price_monte]
 
 
 

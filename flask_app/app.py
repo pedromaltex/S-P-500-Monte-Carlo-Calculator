@@ -12,7 +12,7 @@ import json
 import seaborn as sns
 import matplotlib.pyplot as plt
 from yahooquery import Screener
-
+import numpy as np
 import sys
 import os
 
@@ -74,12 +74,18 @@ def index():
     diference = variables[9].tolist()
     s_portfolio = variables[10].tolist()
     s_portfolio2 = variables[11].tolist()
+    s_total_invest=variables[14].tolist()
+    s_total_allocation=variables[15].tolist()
+    dif = (variables[11] - variables[10]) # / variables[10] ?
+    dif = dif.tolist()
 
+    montecarlo = variables[-1]
+    min_values = montecarlo.min(axis=1).tolist()
+    max_values = montecarlo.max(axis=1).tolist()
+    mean_values = montecarlo.mean(axis=1).tolist()
 
-
-    print(diference)
-
-
+    future_dates = montecarlo.index.strftime('%Y-%m-%d').tolist()
+    y_pred_future = variables[-2].tolist()
 
     # Render the SAME template with results
     return render_template("index.html", 
@@ -96,6 +102,8 @@ def index():
         diference=diference, \
         s_portfolio=s_portfolio, \
         s_portfolio2=s_portfolio2, \
+        s_total_invest=s_total_invest, \
+        s_total_allocation=s_total_allocation, \
         portfolio=variables[12], \
         porfolio2=variables[13], \
         total_invest=variables[12], \
@@ -106,7 +114,11 @@ def index():
         final_allocation=variables[17], \
         roi_standart=variables[18], \
         roi_maltez=variables[19], \
-        bins=variables[20]                        
+        bins=variables[20],  \
+        min_values=min_values, \
+        max_values=max_values , future_dates=future_dates, \
+        mean_values=mean_values, \
+        y_pred_future=y_pred_future, dif=dif, \
     )
 
     # GET request: Show empty form
