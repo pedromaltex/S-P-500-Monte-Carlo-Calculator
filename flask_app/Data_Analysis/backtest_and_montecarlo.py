@@ -310,9 +310,6 @@ def monte_carlo(Monthly_investment, Year, simulacoes, Future_Years):
         roi_maltez, bins, np.floor(min_val), np.ceil(max_val), bin_width, parametros, y_pred_future, sp500_price_monte]
 
 
-
-
-
 # %%
 
 #############################################
