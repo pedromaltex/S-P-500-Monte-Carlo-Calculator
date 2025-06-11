@@ -14,6 +14,7 @@ from aux_functions.helper import future_brownian
 
 
 def monte_carlo(Monthly_investment, Year, simulacoes, Future_Years):
+    parametros = []
 
     # Função para obter os dados históricos do S&P 500
     def get_data(symbol='^GSPC', period='80y', interval='1mo'):
@@ -96,6 +97,12 @@ def monte_carlo(Monthly_investment, Year, simulacoes, Future_Years):
     # Como estás a usar intervalos mensais:
     growth_rate = np.exp(coef_log[0]) - 1
     cagr = (1 + growth_rate)**12 - 1  # anualizado
+    parametros.append(f"{coef_log[0]:.6f}")
+    parametros.append(f"{coef_log[1]:.6f}")
+
+    parametros.append(f"{cagr * 100:.2f}")
+
+
     # %%
     print(f"Crescimento médio mensal: {growth_rate * 100:.2f}%")
     print(f"Crescimento médio anual (CAGR): {cagr * 100:.2f}%")
@@ -127,6 +134,11 @@ def monte_carlo(Monthly_investment, Year, simulacoes, Future_Years):
     print(f"Totalidade de carteira de investimento em Standart Investment: {s_porfolio[-1]}.")
     print(f"Totalidade de dinheiro alocado: {s_total_allocation[-1]}.")
     print(f"Totalidade de carteira de investimento: {s_porfolio2[-1]}.")
+    parametros.append(s_total_invest[-1])
+    parametros.append(s_porfolio[-1])   
+    parametros.append(s_total_allocation[-1])
+    parametros.append(s_porfolio2[-1])
+
     # %%
     #plot5(sp500_data['Date'], s_porfolio, s_porfolio2)
     #plot6(sp500_data['Date'], total_invest, total_allocation)
@@ -191,8 +203,8 @@ def monte_carlo(Monthly_investment, Year, simulacoes, Future_Years):
     # Aplicar exponencial para converter de log-voltar para escala original
     y_pred_future = np.exp(y_pred_log_future)
 
-    precos_df, future_dates = future_brownian(sigma, y_pred_future, sp500_data, Future_Years) # precos_df
-
+    precos_df, future_dates = future_brownian(sigma, y_pred_future, sp500_data, Future_Years, simulacoes) # precos_df
+    
     #plot7(precos_df, future_dates, y_pred_future)
 
     ##########################################################
@@ -285,12 +297,17 @@ def monte_carlo(Monthly_investment, Year, simulacoes, Future_Years):
         bins = np.arange(np.floor(min_val), np.ceil(max_val) + bin_width, bin_width)
 
         #plot10(roi_standart, roi_maltez, bins)
+    parametros.append(np.mean(roi_maltez))
+    parametros.append(np.mean(roi_standart))
+    parametros.append(np.mean(final_values1))
+    parametros.append(np.mean(final_values2))
+
     diference = 100 * (y - y_pred)/y_pred
     return [sp500_data['Date'], sp500_data['Close'], name, y_pred_log, \
         log_sp500, coef_log[1], coef_log[0], y_pred, y, diference, \
         s_porfolio, s_porfolio2, porfolio, porfolio2, s_total_invest, s_total_allocation, final_values1, \
         final_values2, total_allocation, final_allocation, roi_standart, \
-        roi_maltez, bins, np.floor(min_val), np.ceil(max_val), bin_width, y_pred_future, sp500_price_monte]
+        roi_maltez, bins, np.floor(min_val), np.ceil(max_val), bin_width, parametros, y_pred_future, sp500_price_monte]
 
 
 

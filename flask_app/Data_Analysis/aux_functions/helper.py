@@ -7,11 +7,11 @@ from aux_functions.plotter import plot1, plot2, plot3, plot4, plot5, plot6, plot
 ####################################
 # Objetivo: Regressão linear SP500 #
 ####################################
-Monthly_investment = 500
-simulacoes = 10000
-Future_Years = 5
+#Monthly_investment = 500
+#simulacoes = 10000
+#Future_Years = 5
 
-def future_brownian(sigma, avg_expo, stock_data, years):
+def future_brownian(sigma, avg_expo, stock_data, years, simulacoes):
 
     last_price = float(stock_data['Close'].iloc[-1])
 
@@ -44,4 +44,4 @@ def future_brownian(sigma, avg_expo, stock_data, years):
     #plot7(precos_df, future_dates, avg_expo)
     return precos_df, future_dates
 # %%
-#future_brownian(sigma, y_pred_future, sp500_data, Future_Years)
+#future_brownian(sigma, y_pred_future, sp500_data, Future_Years, simulacoes)

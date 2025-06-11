@@ -55,10 +55,10 @@ def index():
     #if request.method == "POST":
     # Extract form inputs (with error handling)
     try:
-        monthly = float(request.form.get("Monthly", 900))
-        year = int(request.form.get("Year", 2025))
+        monthly = float(request.form.get("Monthly", 100))
+        year = int(request.form.get("Year", 2020))
         n_simulations = int(request.form.get("NSimulations", 10000))
-        future_years = int(request.form.get("future", 10))
+        future_years = int(request.form.get("future", 5))
     except (ValueError, TypeError):
         return "Invalid input values", 400
 
@@ -108,6 +108,20 @@ def index():
     final_values1=final_values1.tolist()
     final_values2=final_values2.tolist()
 
+    parametros = variables[-3]
+    coef_0 = parametros[0]
+    coef_1 = parametros[1]
+    cagr = parametros[2]
+    s_allocated = parametros[3]
+    s_port_final = parametros[4]
+    s_allocated2 = parametros[5]
+    s_port_final2 = parametros[6]
+    media_roi_maltez = parametros[7]
+    media_roi_std = parametros[8]
+    media_std = parametros[9]
+    media_maltez = parametros[10]
+
+
     # Render the SAME template with results
     return render_template("index.html", 
         plots=True,  # Flag to show plots section
@@ -142,7 +156,18 @@ def index():
         dif=dif, bin_min_value=bin_min_value, \
         bin_max_value=bin_max_value, bin_width=bin_width, \
         bin_min_value2=min_val2, bin_max_value2=max_val2, bins2=bins2, \
-        bin_width2=bin_width2
+        bin_width2=bin_width2, \
+        coef_0=coef_0, \
+        coef_1=coef_1, \
+        cagr=cagr, \
+        s_allocated=s_allocated, \
+        s_port_final=s_port_final, \
+        s_allocated2=s_allocated2, \
+        s_port_final2=s_port_final2, \
+        media_roi_maltez=media_roi_maltez, \
+        media_roi_std=media_roi_std, \
+        media_maltez=media_maltez, \
+        media_std=media_std,
     )
 
     # GET request: Show empty form
