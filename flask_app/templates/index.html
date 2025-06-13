@@ -45,19 +45,19 @@
             <!-- Container principal com flexbox -->
             <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: space-between;">
                 <!-- Primeira linha - 2 gráficos -->
-                <div style="flex: 1 1 24%; min-width: 300px; height: 400px;">
+                <div style="flex: 1 1 24%; min-width: 300px; height: 400px; margin-bottom: 40px;">
                     <canvas id="sp500"></canvas>
                 </div>
                 
-                <div style="flex: 1 1 24%; min-width: 300px; height: 400px; margin-bottom: 20px;">
+                <div style="flex: 1 1 24%; min-width: 300px; height: 400px; margin-bottom: 40px;">
                     <canvas id="lineplot"></canvas>
-                    <h4>y = {{coef_0}}x + {{coef_1}}</h4>
+                    <h5>y = {{coef_0}}x + {{coef_1}}</h5>
                 </div>
                 
                 <!-- Segunda linha - 2 gráficos -->
                 <div style="flex: 1 1 24%; min-width: 300px; height: 400px; margin-bottom: 40px;">
                     <canvas id="sp_vs_exp"></canvas>
-                    <h4>Compound Annual Growth Rate(CAGR) = {{cagr}}%</h4>
+                    <h5>Compound Annual Growth Rate(CAGR) = {{cagr}}%</h5>
 
                 </div>
                 
@@ -65,31 +65,37 @@
                     <canvas id="diference"></canvas>
                 </div>
 
-                <div style="flex: 1 1 24%; min-width: 300px; height: 400px; margin-bottom: 20px;">
+                <div style="flex: 1 1 24%; min-width: 300px; height: 400px; margin-bottom: 40px;">
                     <canvas id="standart_vs_weigted"></canvas>
+                    <h5>Buy and Hold Value = {{s_port_final}} $</h5>
+                    <h5>Weighted Investment Value = {{s_port_final2}} $</h5>
+
                 </div>
 
-                <div style="flex: 1 1 24%; min-width: 300px; height: 400px; margin-bottom: 20px;">
+                <div style="flex: 1 1 24%; min-width: 300px; height: 400px; margin-bottom: 40px;">
                     <canvas id="standart_vs_weigted_alloc"></canvas>
+                    <h5>Buy and Hold Alloc = {{s_allocated}} $</h5>
+                    <h5>Weighted Investment Alloc = {{s_allocated2}} $</h5>
+
                 </div>
-                <div style="flex: 1 1 24%; min-width: 300px; height: 400px; margin-bottom: 20px;">
+                <div style="flex: 1 1 24%; min-width: 300px; height: 400px; margin-bottom: 40px;">
                     <canvas id="standart_vs_weigted_diff"></canvas>
                 </div>
 
-                <div style="flex: 1 1 24%; min-width: 300px; height: 400px; margin-bottom: 20px;">
+                <div style="flex: 1 1 24%; min-width: 300px; height: 400px; margin-bottom: 40px;">
                     <canvas style="height: 100%; width: 100%;" id="montecarlo"></canvas>
                 </div>
 
-                <div style="flex: 1 1 24%; min-width: 300px; height: 400px; margin-bottom: 20px;">
+                <div style="flex: 1 1 24%; min-width: 300px; height: 400px; margin-bottom: 40px;">
                     <canvas style="height: 100%; width: 100%;" id="histogram_final_values"></canvas>
-                    <h4>Average Buy and Hold = {{media_std}}</h4>
-                    <h4>Average Weighted Investment= {{media_maltez}}</h4>
+                    <h5>Average Buy and Hold = {{media_std}} $</h5>
+                    <h5>Average Weighted Investment = {{media_maltez}} $</h5>
                 </div>
 
                 <div style="flex: 1 1 24%; min-width: 300px; height: 400px; margin-bottom: 20px;">
                     <canvas style="height: 100%; width: 100%;" id="histogram_roi"></canvas>
-                    <h4>Average ROI Buy and Hold = {{media_roi_std}}%</h4>
-                    <h4>Average ROI Weighted Investment= {{media_roi_maltez}}%</h4>
+                    <h5>Average ROI Buy and Hold = {{media_roi_std}}%</h5>
+                    <h5>Average ROI Weighted Investment = {{media_roi_maltez}}%</h5>
 
                 </div>
             </div>

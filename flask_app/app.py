@@ -112,14 +112,14 @@ def index():
     coef_0 = parametros[0]
     coef_1 = parametros[1]
     cagr = parametros[2]
-    s_allocated = parametros[3]
-    s_port_final = parametros[4]
-    s_allocated2 = parametros[5]
-    s_port_final2 = parametros[6]
-    media_roi_maltez = parametros[7]
-    media_roi_std = parametros[8]
-    media_std = parametros[9]
-    media_maltez = parametros[10]
+    s_allocated = f"{parametros[3]:.2f}"
+    s_port_final = f"{parametros[4]:.2f}"
+    s_allocated2 = f"{parametros[5]:.2f}"
+    s_port_final2 = f"{parametros[6]:.2f}"
+    media_roi_maltez = f"{parametros[7]:.2f}"
+    media_roi_std = f"{parametros[8]:.2f}"
+    media_std = f"{parametros[9]:.2f}"
+    media_maltez = f"{parametros[10]:.2f}"
 
 
     # Render the SAME template with results
