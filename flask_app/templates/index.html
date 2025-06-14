@@ -331,16 +331,16 @@
                             datasets: [
                                 {
                                     label: 'Buy and Hold',
-                                    data: {{ s_total_allocation | tojson }},
+                                    data: {{ s_total_invest | tojson }},
                                     borderColor: 'rgba(75, 192, 192, 1)',
                                     backgroundColor: 'rgba(75, 192, 192, 0.2)',
                                     tension: 0.4,
                                     pointRadius: 0
                                 },
-                                {% if s_total_invest %}
+                                {% if s_total_allocation %}
                                 {
                                     label: 'Weighted Investment',
-                                    data: {{ s_total_invest | tojson }},
+                                    data: {{ s_total_allocation | tojson }},
                                     borderColor: 'rgba(192, 75, 192, 1)',
                                     backgroundColor: 'rgba(192, 75, 192, 0.2)',
                                     tension: 0.4,
