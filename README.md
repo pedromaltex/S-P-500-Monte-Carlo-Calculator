@@ -17,28 +17,28 @@ This is a web application built with **Flask** that simulates investment strateg
 ---
 
 ## 🗂️ Project Structure
-S-P-500-MONTE-CARLO-CALCULATOR/
-│
-├── flask_app/
-│ ├── Data_Analysis/
-│ │ ├── aux_functions/
-│ │ ├── S&P500_Data/
-│ │ └── backtest_and_montecarlo.py
-│ ├── flask_session/
-│ ├── help/
-│ └── static/
-│
-├── templates/
-│ ├── index.html
-│ ├── apology.html
-│ └── layout.html
-│
-├── app.py # Main Flask application
-├── helpers.py # Custom helper functions
-├── finance.db # SQLite3 database file
-├── requirements.txt # Python dependencies
-├── LICENSE
-└── README.md
+    S-P-500-MONTE-CARLO-CALCULATOR/
+    │
+    ├── flask_app/
+    │ ├── Data_Analysis/
+    │ │ ├── aux_functions/
+    │ │ ├── S&P500_Data/
+    │ │ └── backtest_and_montecarlo.py
+    │ ├── flask_session/
+    │ ├── help/
+    │ └── static/
+    │
+    ├── templates/
+    │ ├── index.html
+    │ ├── apology.html
+    │ └── layout.html
+    │
+    ├── app.py # Main Flask application
+    ├── helpers.py # Custom helper functions
+    ├── finance.db # SQLite3 database file
+    ├── requirements.txt # Python dependencies
+    ├── LICENSE
+    └── README.md
 
 
 ---
@@ -95,4 +95,4 @@ Developed by Pedro Maltez.
 For questions, suggestions, or contributions, feel free to open an issue or contact via GitHub.
 
 
-Disclaimer: This tool is for educational purposes only and does not constitute financial advice.
+Disclaimer: This tool is for educational purposes only and does not constitute financial advice.y
