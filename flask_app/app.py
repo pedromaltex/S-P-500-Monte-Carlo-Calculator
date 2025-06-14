@@ -165,11 +165,14 @@ def index():
         s_allocated=s_allocated, \
         s_port_final=s_port_final, \
         s_allocated2=s_allocated2, \
+        rel_dif_alloc=f"{(100*(float(s_allocated2)-float(s_allocated))/float(s_allocated)):.2f}", \
+        rel_dif_inv=f"{100*(float(s_port_final2)-float(s_port_final))/float(s_port_final):.2f}", \
         s_port_final2=s_port_final2, \
         media_roi_maltez=media_roi_maltez, \
         media_roi_std=media_roi_std, \
         media_maltez=media_maltez, \
         media_std=media_std,
+
     )
 
     # GET request: Show empty form

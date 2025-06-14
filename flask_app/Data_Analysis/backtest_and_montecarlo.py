@@ -84,13 +84,13 @@ def monte_carlo(Monthly_investment, SYear, FYear, simulacoes, Future_Years):
 
 
     # Calcular rendimento médio do sp500, apenas funciona com períodos em meses
-    y1 = y_pred[-11]
-    y2 = y_pred[-23]
-    percent = 100 * (y1 - y2) / y2
+    #y1 = y_pred[-11]
+    #y2 = y_pred[-23]
+    #percent = 100 * (y1 - y2) / y2
     # %%
-    print(f"Preço teste: {y1}")
-    print(f"Preço teste 12 meses atrás: {y2}")
-    print(f"Rendimento médio do {name}: {percent}%")
+    #print(f"Preço teste: {y1}")
+    #print(f"Preço teste 12 meses atrás: {y2}")
+    #print(f"Rendimento médio do {name}: {percent}%")
 
     # A inclinação B1 representa o crescimento logarítmico por "unidade de tempo"
     # Como estás a usar intervalos mensais:
