@@ -56,14 +56,16 @@ def index():
     # Extract form inputs (with error handling)
     try:
         monthly = float(request.form.get("Monthly", 100))
-        year = int(request.form.get("Year", 2020))
+        syear = int(request.form.get("SYear", 2000))
+        fyear = int(request.form.get("FYear", 2025))
+
         n_simulations = int(request.form.get("NSimulations", 10000))
         future_years = int(request.form.get("future", 5))
     except (ValueError, TypeError):
         return "Invalid input values", 400
 
     # Run Monte Carlo simulation
-    variables = monte_carlo(monthly, year, n_simulations, future_years)
+    variables = monte_carlo(monthly, syear, fyear, n_simulations, future_years)
     timeline = [dt.strftime('%Y-%m-%d') for dt in variables[0]]
 
     sp500_prices = variables[1]['^GSPC'].tolist()

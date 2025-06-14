@@ -12,13 +12,14 @@
     <div style="display: flex; flex-direction: column;">
         <form id="compare" method="POST" style="width: 100%; text-align: left;">
             <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 1rem;">
-                {% for field in ['Monthly', 'Year', 'NSimulations', 'future'] %}
+                {% for field in ['Monthly', 'SYear', 'FYear', 'NSimulations', 'future'] %}
                 <div style="flex: 1;">
                     <input autocomplete="off" class="form-control" 
                            name="{{ field }}" 
                            placeholder="{{ {
                                'Monthly': 'Monthly Investments ($)',
-                               'Year': 'Starting Year',
+                               'SYear': 'Starting Year',
+                               'FYear': 'Final Year',
                                'NSimulations': 'Simulation Count',
                                'future': 'Years to Project'
                            }[field] }}"

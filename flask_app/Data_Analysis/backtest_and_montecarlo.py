@@ -13,9 +13,8 @@ from aux_functions.plotter import plot1, plot2, plot3, plot4, plot5, plot6, plot
 from aux_functions.helper import future_brownian
 
 
-def monte_carlo(Monthly_investment, Year, simulacoes, Future_Years):
+def monte_carlo(Monthly_investment, SYear, FYear, simulacoes, Future_Years):
     parametros = []
-
     # Função para obter os dados históricos do S&P 500
     def get_data(symbol='^GSPC', period='80y', interval='1mo'):
         data = yf.download(tickers=symbol, period=period, interval=interval)
@@ -34,7 +33,7 @@ def monte_carlo(Monthly_investment, Year, simulacoes, Future_Years):
         name = yf.Ticker(name).info['longName']
 
     sp500_data = sp500_data[['Close']].reset_index()
-    sp500_data = sp500_data[(sp500_data['Date'] <= f'{Year}-12-31')]
+    sp500_data = sp500_data[(sp500_data['Date'] <= f'{FYear}-12-31') & (sp500_data['Date'] >= f'{SYear}-01-01')]
 
     # Criar um vetor de anos com base no número de dados
     unit_of_time = np.arange(len(sp500_data))
@@ -147,11 +146,16 @@ def monte_carlo(Monthly_investment, Year, simulacoes, Future_Years):
     # Ver se a função Diference tem média 0 num espaço grande de tempo
     print(f"Média do gráfico diference: {np.mean(diference)}%")
     # %%
-    year = Year
     # Vamos fazer com dados até x estudar 
-    sp500_data_since_a_year = sp500_data[(sp500_data['Date'] <= '2025-12-31') & (sp500_data['Date'] >= f'{year}-01-01')]
+    sp500_data_since_a_year = sp500_data
     days_year = len(sp500_data_since_a_year)
     sp500_data_since_a_year['Close'].values[0][0]
+
+    #year = SYear
+    # Vamos fazer com dados até x estudar 
+    #sp500_data_since_a_year = sp500_data[(sp500_data['Date'] <= '2025-12-31') & (sp500_data['Date'] >= f'{year}-01-01')]
+    #days_year = len(sp500_data_since_a_year)
+    #sp500_data_since_a_year['Close'].values[0][0]
 
     # Obter as datas reais
     datas = sp500_data_since_a_year['Date'].reset_index(drop=True)
