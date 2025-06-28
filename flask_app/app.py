@@ -109,6 +109,13 @@ def index():
     bins2=bins2.tolist()
     final_values1=final_values1.tolist()
     final_values2=final_values2.tolist()
+    
+    monte_carlo_over_under_valuation = 100*(max_values[0] - y_pred_future[0]) / y_pred_future[0]
+
+    monte_carlo_over_under_valuation_str = f"Undervalued by {monte_carlo_over_under_valuation:.2f}"
+    if monte_carlo_over_under_valuation >= 0:
+        monte_carlo_over_under_valuation_str = f"Overvalued by {monte_carlo_over_under_valuation:.2f}"
+    
 
     parametros = variables[-3]
     coef_0 = parametros[0]
@@ -171,7 +178,8 @@ def index():
         media_roi_maltez=media_roi_maltez, \
         media_roi_std=media_roi_std, \
         media_maltez=media_maltez, \
-        media_std=media_std,
+        media_std=media_std, \
+        monte_carlo_over_under_valuation_str=monte_carlo_over_under_valuation_str,
 
     )
 
